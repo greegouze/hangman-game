@@ -1,13 +1,18 @@
-import { useState } from "react";
-import PenduContext from "../contexts/PenduContext";
-import { useContext } from "react";
+import { useEffect, useState } from "react";
+// import PenduContext from "../contexts/PenduContext";
+// import { useContext } from "react";
+// import styles from './Pendu.module.css'
+// import { Link } from "react-router-dom";
 
-function Pendu({word, tries}){
+
+function Pendu(){
+  const tries = 2;
   
-  const {letterGuess, setLetterGuess} = useContext(PenduContext)
-  
+  // const {letterGuess, setLetterGuess} = useContext(PenduContext)
+  const [letterGuess, setLetterGuess] = useState([])
   const [input, setInput] =useState('') //me permet d'initialiser un état puis ensuite le modifier
   const [triesCount, setTriesCount] = useState(tries)
+  const[word, setWord] = useState('')
   
   
   const checked=(letter) => {
@@ -30,6 +35,7 @@ function Pendu({word, tries}){
       //je vérifie si la lettre est dans le mot
       if(word.includes(input)){
         checked(input)
+        
       } 
       else {
         setTriesCount(triesCount - 1)
@@ -40,12 +46,27 @@ function Pendu({word, tries}){
     
   }
   
+  useEffect(() => {
+    const controller = new AbortController
+    
+    const go = async () => {
+      const res = await fetch('https://random-word-api.herokuapp.com/word');
+      const data = await res.json();
+      const mot = data[0];
+      setWord(mot)
+      console.log(mot);
+    };
+    go();
+    return () => {
+      controller.abort
+    }
+  }, [])
+  
   const retry = () => {
     if(wordIsComplete === true || triesCount === 0 ){
-      document.location.href="/."
+      document.location.href="/pendu"
     }
   }
-  
   
   const wordDisplay = newWord();
   const wordIsComplete = !wordDisplay.includes("_"); // Vérifie si le mot a été complètement découvert
@@ -71,8 +92,8 @@ function Pendu({word, tries}){
         ) : (
           <>
           <p>Nombre d essais restants : {triesCount}</p>
-          <p>Mot : {wordDisplay}</p>
-          <p>Lettres découvertes : {letterGuess.join(", ")}</p>
+          <p>Mot : {wordDisplay}</p>  
+          <span>Lettres découvertes : <span>{letterGuess.join(", ")}</span></span>
           </>
           )}
           </form>
