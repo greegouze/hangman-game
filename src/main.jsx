@@ -6,18 +6,24 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorPage from './components/error-page.jsx'
 // import PenduSylvain from './components/PenduSylvain.jsx'
 import Pendu from './components/Pendu.jsx'
+import ConvertRomeLetter from './components/ConvertRomeLetter.jsx'
 
 const router = createBrowserRouter([
   {
     path:'/',
-  element: <App/>,
+    element: <App/>,
     errorElement: <ErrorPage/>
   },
-   {
-     path:'/pendu',
-     element: <Pendu/>,
+  {
+    path:'/pendu',
+    element: <Pendu/>,
     
-   },
+  },
+  {
+    path:'/convert',
+    element: <ConvertRomeLetter/>,
+    
+  },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

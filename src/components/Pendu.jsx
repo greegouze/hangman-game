@@ -50,7 +50,7 @@ function Pendu(){
     const controller = new AbortController
     
     const go = async () => {
-      const res = await fetch('https://random-word-api.herokuapp.com/word');
+      const res = await fetch('https://random-word-api.herokuapp.com/word?length=8');
       const data = await res.json();
       const mot = data[0];
       setWord(mot)
